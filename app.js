@@ -8,16 +8,30 @@ const app = express();
 
 var url = 'http://google.com';
 
-request(url, function(err, res, body) {
-    if(err) {
-        console.log(err);
-    } else {
-        console.log(body);
-    }
-});
+// request(url, function (err, res, body) {
+//     if (err) {
+//         console.log(err);
+//     } else {
+//         console.log(body);
+//     }
+// });
 
-app.get('/console', function(req, res) {
-    res.send('Hello World!');
+const sendPage = () => {
+    return new Promise((resolve, reject) => {
+        request(url, function (err, res, body) {
+            if (err) {
+                reject(console.log(err));
+            } else {
+                resolve(body);
+            }
+        });
+    })
+}
+
+app.get('/page', function (req, res) {
+    sendPage().then(response => {
+        res.send(response);
+    });
 });
 
 app.use('/', express.static(path.join(__dirname, 'public')));
@@ -26,5 +40,5 @@ app.use('/', express.static(path.join(__dirname, 'public')));
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
+    console.log(`Listening on port ${port}`);
 });
