@@ -14,10 +14,11 @@ html, body {
     font-size: 16px;
 }
 
-.container__results {
+#container__results {
     min-height: 60vh;
     display: flex;
     justify-content: center;
+    align-content: center;
 }
 
 .container__button {
