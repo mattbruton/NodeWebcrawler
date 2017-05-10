@@ -1,4 +1,6 @@
-let button = document.getElementById('btn');
+const button = document.getElementById('btn');
+const userInput = document.getElementById('url-input');
+const resultsContainer = document.getElementById('container__results');
 
 const fetchPage = (fetchThis) => {
   return new Promise((resolve, reject) => {
@@ -16,14 +18,21 @@ const fetchPage = (fetchThis) => {
   });
 };
 
+const createIFrame = (html) => {
+  let iframe = document.createElement('iframe');
+  iframe.setAttribute('srcdoc', response);
+  iframe.setAttribute('height', '400px')
+  iframe.setAttribute('width', '800px');
+  if (document.querySelector('iframe')) {
+    resultsContainer.removeChild(document.querySelector('iframe'));
+  }
+  resultsContainer.appendChild(iframe);
+};
+
 button.addEventListener('click', () => {
-  fetchPage("http://reddit.com")
+  fetchPage(userInput.value)
     .then(response => {
-      var iframe = document.createElement('iframe');
-      iframe.setAttribute('srcdoc', response);
-      iframe.setAttribute('height', '400px')
-      iframe.setAttribute('width', '800px');
-      document.getElementById('container__results').appendChild(iframe);
+      createIFrame(response);
     });
 });
 
