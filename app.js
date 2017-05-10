@@ -3,18 +3,13 @@ const express = require('express');
 const cheerio = require('cheerio');
 const path = require('path');
 const request = require('request');
+const bodyParser = require('body-parser');
 
 const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-var url = 'http://google.com';
-
-// request(url, function (err, res, body) {
-//     if (err) {
-//         console.log(err);
-//     } else {
-//         console.log(body);
-//     }
-// });
+let url = 'http://abc.com';
 
 const sendPage = () => {
     return new Promise((resolve, reject) => {
@@ -25,17 +20,23 @@ const sendPage = () => {
                 resolve(body);
             }
         });
-    })
-}
+    });
+};
 
-app.get('/page', function (req, res) {
+app.get('/page', ((req, res) => {
     sendPage().then(response => {
         res.send(response);
     });
+}));
+
+app.post('/newUrl', function (req, res) {
+    if (req.body.url) {
+        url = req.body.url;
+        res.send(console.log(`Got data from client to fetch ${url}`));
+    };
 });
 
 app.use('/', express.static(path.join(__dirname, 'public')));
-
 
 const port = process.env.PORT || 3000;
 
