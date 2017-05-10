@@ -22,10 +22,6 @@ const fetchPage = (url) => {
     });
 };
 
-app.get('/page', ((req, res) => {
-    res.send(console.log(`The current URL being crawled is ${url}.`));
-}));
-
 app.post('/newUrl', function (req, res) {
     if (req.body.url) {
         url = req.body.url;
