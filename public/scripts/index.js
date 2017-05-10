@@ -24,7 +24,8 @@ const fetchPage = (fetchThis) => {
 const createIFrame = (html) => {
   let iframe = document.createElement('iframe');
   iframe.setAttribute('srcdoc', html);
-  iframe.setAttribute('height', '400px')
+  iframe.setAttribute('class', 'remote__iframe');
+  iframe.setAttribute('height', '400px');
   iframe.setAttribute('width', '800px');
   if (document.querySelector('iframe')) {
     resultsContainer.removeChild(document.querySelector('iframe'));
@@ -45,6 +46,18 @@ button.addEventListener('click', () => {
     .then(data => Parser.subDomainHelper(data))
     .then(data => Parser.filterDomainsFromRoot(data, getRootDomainForUserInput()))
     .then(data => Parser.filterUndefined(data))
-    .then(data => console.log(data));
+    .then(data => {
+      CreateResultsNotification(data);
+      console.log(data)
+    });
+    
 });
 
+const CreateResultsNotification = (results) => {
+  let h3 = document.createElement('h3');
+  h3.innerHTML = `Found X remote urls on Domain.com!`;
+  if (resultsContainer.querySelector('h3')){
+    resultsContainer.removeChild(document.querySelector('h3'));
+  }
+  resultsContainer.appendChild(h3);
+};

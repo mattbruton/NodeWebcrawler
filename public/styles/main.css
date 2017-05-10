@@ -17,8 +17,15 @@ html, body {
 #container__results {
     min-height: 60vh;
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     justify-content: center;
     align-content: center;
+}
+
+.remote__iframe {
+    flex: 0 1 100%;
+    margin: 0 15%;
 }
 
 .container__button {
