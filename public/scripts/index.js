@@ -1,4 +1,5 @@
 import * as Parser from './url-parser.js';
+import * as UpdateDOM from './update-dom.js';
 
 const button = document.getElementById('btn');
 const userInput = document.getElementById('url-input');
@@ -23,24 +24,14 @@ const fetchPage = (fetchThis) => {
   });
 };
 
-const createIFrame = (html) => {
-  let iframe = document.createElement('iframe');
-  iframe.setAttribute('srcdoc', html);
-  iframe.setAttribute('class', 'remote__iframe');
-  if (document.querySelector('iframe')) {
-    resultsContainer.removeChild(document.querySelector('iframe'));
-  }
-  resultsContainer.appendChild(iframe);
-};
-
 const getRootDomainForUserInput = () => {
   return Parser.removeSubDomain(userInput.value);
-}
+};
 
 button.addEventListener('click', () => {
   fetchPage(userInput.value)
     .then(response => {
-      createIFrame(response)
+      UpdateDOM.createIFrame(response, resultsContainer)
       return Parser.findAllUrls(response)
     })
     .then(data => Parser.subDomainHelper(data))
@@ -49,10 +40,8 @@ button.addEventListener('click', () => {
     .then(data => {
       CreateResultsNotification(data, userInput.value);
       dataForTable.push({url: `${getRootDomainForUserInput()}, totalRemoteUrls: ${data.length}`});
-      console.log(dataForTable);
       // console.log(Parser.removeDuplicateUrls(data));
-    });
-    
+    });  
 });
 
 const CreateResultsNotification = (results, domain) => {
