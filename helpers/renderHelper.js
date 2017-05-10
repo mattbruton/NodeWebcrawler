@@ -1,6 +1,6 @@
-const scrape = require('website-scraper');
-var fs = require('fs'),
-    _ = require('underscore');
+// const scrape = require('website-scraper');
+// var fs = require('fs'),
+//     _ = require('underscore');
 
 let options = {
     urls: ['http://google.com/'],
