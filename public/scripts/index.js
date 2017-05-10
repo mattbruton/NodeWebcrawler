@@ -4,6 +4,8 @@ const button = document.getElementById('btn');
 const userInput = document.getElementById('url-input');
 const resultsContainer = document.getElementById('container__results');
 
+const dataForTable = [];
+
 const fetchPage = (fetchThis) => {
   return new Promise((resolve, reject) => {
     fetch('./newUrl',
@@ -46,7 +48,9 @@ button.addEventListener('click', () => {
     .then(data => Parser.filterUndefined(data))
     .then(data => {
       CreateResultsNotification(data, userInput.value);
-      console.log(Parser.removeDuplicateUrls(data));
+      dataForTable.push({url: `${getRootDomainForUserInput()}, totalRemoteUrls: ${data.length}`});
+      console.log(dataForTable);
+      // console.log(Parser.removeDuplicateUrls(data));
     });
     
 });
