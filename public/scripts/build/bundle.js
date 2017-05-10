@@ -85,9 +85,9 @@ var findAllUrls = exports.findAllUrls = function findAllUrls(data) {
 
 // Couldn't find another way to check accurately without having some hard coded list of TLDs.
 var removeSubDomain = exports.removeSubDomain = function removeSubDomain(str) {
-  var re2 = /([a-z0-9]+)\.(arpa|asia|au|be|biz|com|co\.uk|de|edu|gov|ie|int|io|it|ly|mil|net|org|org\.uk|ru)/;
-  if (str.match(re2)) {
-    return str.match(re2)[0];
+  var re = /([a-z0-9]+)\.(arpa|asia|au|be|biz|com|co\.uk|de|edu|gov|ie|int|io|it|ly|mil|net|org|org\.uk|ru)/;
+  if (str.match(re)) {
+    return str.match(re)[0];
   }
 };
 
@@ -96,6 +96,25 @@ var subDomainHelper = exports.subDomainHelper = function subDomainHelper(urls) {
     return resolve(urls.map(function (url) {
       return removeSubDomain(url);
     }));
+  });
+};
+
+var filterDomainsFromRoot = exports.filterDomainsFromRoot = function filterDomainsFromRoot(arr, root) {
+  return new Promise(function (resolve, reject) {
+    arr = arr.filter(function (url) {
+      return url !== root;
+    });
+    return resolve(arr);
+  });
+};
+
+var filterUndefined = exports.filterUndefined = function filterUndefined(arr) {
+  return new Promise(function (resolve, reject) {
+    return resolve(arr.filter(Boolean));
+    // arr = arr.filter(url => {
+    //   return url != undefined;
+    // });
+    // return resolve(arr);
   });
 };
 
@@ -144,13 +163,22 @@ var createIFrame = function createIFrame(html) {
   resultsContainer.appendChild(iframe);
 };
 
+var getRootDomainForUserInput = function getRootDomainForUserInput() {
+  return Parser.removeSubDomain(userInput.value);
+};
+
 button.addEventListener('click', function () {
   fetchPage(userInput.value).then(function (response) {
     createIFrame(response);
     return Parser.findAllUrls(response);
   }).then(function (data) {
-    console.log(data);
-    Parser.subDomainHelper(data);
+    return Parser.subDomainHelper(data);
+  }).then(function (data) {
+    return Parser.filterDomainsFromRoot(data, getRootDomainForUserInput());
+  }).then(function (data) {
+    return Parser.filterUndefined(data);
+  }).then(function (data) {
+    return console.log(data);
   });
 });
 
