@@ -1,11 +1,13 @@
 import * as Parser from './url-parser.js';
 import * as UpdateDOM from './update-dom.js';
+import * as Validator from './validator.js';
 
 const button = document.getElementById('btn');
 const userInput = document.getElementById('url-input');
 const resultsContainer = document.getElementById('container__results');
 
 const dataForTable = [];
+const domainsToScrape = [];
 
 const fetchPage = (fetchThis) => {
   return new Promise((resolve, reject) => {
@@ -29,7 +31,7 @@ const getRootDomainForUserInput = () => {
 };
 
 button.addEventListener('click', () => {
-  fetchPage(userInput.value)
+  fetchPage(Validator.validateInput(userInput.value))
     .then(response => {
       UpdateDOM.createIFrame(response, resultsContainer)
       return Parser.findAllUrls(response)
