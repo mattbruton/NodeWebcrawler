@@ -32,15 +32,19 @@ const createIFrame = (html) => {
   resultsContainer.appendChild(iframe);
 };
 
+const getRootDomainForUserInput = () => {
+  return Parser.removeSubDomain(userInput.value);
+}
+
 button.addEventListener('click', () => {
   fetchPage(userInput.value)
     .then(response => {
       createIFrame(response)
       return Parser.findAllUrls(response)
     })
-    .then(data => {
-      console.log(data);
-      Parser.subDomainHelper(data)
-    });
+    .then(data => Parser.subDomainHelper(data))
+    .then(data => Parser.filterDomainsFromRoot(data, getRootDomainForUserInput()))
+    .then(data => Parser.filterUndefined(data))
+    .then(data => console.log(data));
 });
 

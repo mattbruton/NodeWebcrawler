@@ -29,7 +29,7 @@ app.post('/newUrl', function (req, res) {
             res.send(response);
         })
     } else {
-        res.send(console.log(`Recieved a post request, but wasn't valid.`))
+        res.send(console.log(`Received a post request, but wasn't valid.`))
     }
 });
 
