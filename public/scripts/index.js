@@ -25,8 +25,6 @@ const createIFrame = (html) => {
   let iframe = document.createElement('iframe');
   iframe.setAttribute('srcdoc', html);
   iframe.setAttribute('class', 'remote__iframe');
-  iframe.setAttribute('height', '400px');
-  iframe.setAttribute('width', '800px');
   if (document.querySelector('iframe')) {
     resultsContainer.removeChild(document.querySelector('iframe'));
   }
