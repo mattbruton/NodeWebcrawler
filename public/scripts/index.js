@@ -22,23 +22,25 @@ const fetchPage = (fetchThis) => {
 };
 
 const createIFrame = (html) => {
-    let iframe = document.createElement('iframe');
-    iframe.setAttribute('srcdoc', html);
-    iframe.setAttribute('height', '400px')
-    iframe.setAttribute('width', '800px');
-    if (document.querySelector('iframe')) {
-      resultsContainer.removeChild(document.querySelector('iframe'));
-    }
-    resultsContainer.appendChild(iframe);
+  let iframe = document.createElement('iframe');
+  iframe.setAttribute('srcdoc', html);
+  iframe.setAttribute('height', '400px')
+  iframe.setAttribute('width', '800px');
+  if (document.querySelector('iframe')) {
+    resultsContainer.removeChild(document.querySelector('iframe'));
+  }
+  resultsContainer.appendChild(iframe);
 };
 
 button.addEventListener('click', () => {
   fetchPage(userInput.value)
-  .then(response => {
-    createIFrame(response)
-    Parser.findAllUrls(response)
-    return response;
-  })
-  .then(data => console.log(data))
+    .then(response => {
+      createIFrame(response)
+      return Parser.findAllUrls(response)
+    })
+    .then(data => {
+      console.log(data);
+      Parser.subDomainHelper(data)
+    });
 });
 
