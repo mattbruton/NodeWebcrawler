@@ -50,5 +50,5 @@ button.addEventListener('click', () => {
 pause.addEventListener('click', () => {
   resultsContainer.innerHTML = "";
   UpdateDOM.CreateResultsTable(resultsContainer);
-  UpdateDOM.CreateTableRows(dataForTable, document.querySelector('table'));
+  UpdateDOM.CreateDecendingTableRows(dataForTable, document.querySelector('table'));
 });

@@ -18,36 +18,27 @@ export const CreateResultsNotification = (results, domain, parent) => {
   parent.appendChild(h3);
 };
 
-export const CreateResultsTable = (parent) => {
-    let table = document.createElement('table');
-    let tableHeader = document.createElement('tr');
-    let tableDataDomain = document.createElement('td');
-    let tableDataCount = document.createElement('td');
-    table.setAttribute('class', 'resultsTable');
-    table.appendChild(tableHeader);
-    tableHeader.appendChild(tableDataDomain);
-    tableHeader.appendChild(tableDataCount);
-    tableDataCount.innerText = "Total Remote URLs";
-    tableDataDomain.innerText = "URL";
-    parent.appendChild(table);
-};
+export const CreateResultsTable = (parent => {
+  let table = document.createElement('table');
+  table.setAttribute('class', 'resultsTable');
+  table.innerHTML = `
+  <tr>
+    <td>URL</td>
+    <td>Total Remote URLs</td>
+  <tr>
+  `;
+  parent.appendChild(table);
+})
 
-export const CreateTableRows = (results, parent) => {
-  let rowIdCounter = 0;
-  results.map(result => {
+export const CreateDecendingTableRows = (results, parent) => {
+  results.sort((a,b) => b.totalRemoteUrls - a.totalRemoteUrls)
+  .map(result => {
     let row = document.createElement('tr');
     parent.appendChild(row);
-    let url = document.createElement('td');
-    let count = document.createElement('td');
-    url.setAttribute('id', `url${rowIdCounter}`);
-    count.setAttribute('id', `result${rowIdCounter}`);
-    let urlData = result.url;
-    let countData = result.totalRemoteUrls;
-    row.appendChild(url);
-    row.appendChild(count);
-    url.innerText = urlData;
-    count.innerHTML = countData;
-    
-    rowIdCounter++;
+    row.innerHTML = `
+    <td class="url_cell">${result.url}</td>
+    <td class="count_cell">${result.totalRemoteUrls}</td>
+    `;
+    parent.appendChild(row);
   });
 };
