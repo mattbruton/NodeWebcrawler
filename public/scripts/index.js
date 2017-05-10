@@ -3,6 +3,7 @@ import * as UpdateDOM from './update-dom.js';
 import * as Validator from './validator.js';
 
 const button = document.getElementById('btn');
+const pause = document.getElementById('pause');
 const userInput = document.getElementById('url-input');
 const resultsContainer = document.getElementById('container__results');
 
@@ -41,7 +42,13 @@ button.addEventListener('click', () => {
     .then(data => Parser.filterUndefined(data))
     .then(data => {
       UpdateDOM.CreateResultsNotification(data, userInput.value, resultsContainer);
-      dataForTable.push({url: `${getRootDomainForUserInput()}, totalRemoteUrls: ${data.length}`});
+      dataForTable.push({url: `${getRootDomainForUserInput()}`, totalRemoteUrls: data.length});
       // console.log(Parser.removeDuplicateUrls(data));
     });  
+});
+
+pause.addEventListener('click', () => {
+  resultsContainer.innerHTML = "";
+  UpdateDOM.CreateResultsTable(resultsContainer);
+  UpdateDOM.CreateTableRows(dataForTable, document.querySelector('table'));
 });
