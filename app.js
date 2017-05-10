@@ -9,9 +9,9 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-let url = 'http://abc.com';
+let url;
 
-const sendPage = () => {
+const fetchPage = (url) => {
     return new Promise((resolve, reject) => {
         request(url, function (err, res, body) {
             if (err) {
@@ -24,22 +24,22 @@ const sendPage = () => {
 };
 
 app.get('/page', ((req, res) => {
-    sendPage().then(response => {
-        res.send(response);
-    });
+    res.send(console.log(`The current URL being crawled is ${url}.`));
 }));
 
 app.post('/newUrl', function (req, res) {
     if (req.body.url) {
         url = req.body.url;
-        res.send(console.log(`Got data from client to fetch ${url}`));
-    };
+        fetchPage(url).then(response => {
+            res.send(response);
+        })
+    } else {
+        res.send(console.log(`Recieved a post request, but wasn't valid.`))
+    }
 });
 
 app.use('/', express.static(path.join(__dirname, 'public')));
-
 const port = process.env.PORT || 3000;
-
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 });
