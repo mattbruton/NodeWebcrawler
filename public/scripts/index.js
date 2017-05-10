@@ -38,17 +38,8 @@ button.addEventListener('click', () => {
     .then(data => Parser.filterDomainsFromRoot(data, getRootDomainForUserInput()))
     .then(data => Parser.filterUndefined(data))
     .then(data => {
-      CreateResultsNotification(data, userInput.value);
+      UpdateDOM.CreateResultsNotification(data, userInput.value, resultsContainer);
       dataForTable.push({url: `${getRootDomainForUserInput()}, totalRemoteUrls: ${data.length}`});
       // console.log(Parser.removeDuplicateUrls(data));
     });  
 });
-
-const CreateResultsNotification = (results, domain) => {
-  let h3 = document.createElement('h3');
-  h3.innerHTML = `Found ${results.length} remote urls on ${domain}!`;
-  if (resultsContainer.querySelector('h3')){
-    resultsContainer.removeChild(document.querySelector('h3'));
-  }
-  resultsContainer.appendChild(h3);
-};

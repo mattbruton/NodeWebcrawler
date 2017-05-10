@@ -7,3 +7,12 @@ export const createIFrame = (html, parent) => {
   }
   parent.appendChild(iframe);
 };
+
+export const CreateResultsNotification = (results, domain, parent) => {
+  let h3 = document.createElement('h3');
+  h3.innerHTML = `Found ${results.length} remote urls on ${domain}!`;
+  if (parent.querySelector('h3')){
+    parent.removeChild(document.querySelector('h3'));
+  }
+  parent.appendChild(h3);
+};
