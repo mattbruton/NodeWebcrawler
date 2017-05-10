@@ -46,7 +46,7 @@ button.addEventListener('click', () => {
     .then(data => Parser.filterUndefined(data))
     .then(data => {
       CreateResultsNotification(data, userInput.value);
-      console.log(data)
+      console.log(Parser.removeDuplicateUrls(data));
     });
     
 });

@@ -34,3 +34,7 @@ export const filterUndefined = (arr) => {
     return resolve(arr.filter(Boolean))
   });
 };
+
+export const removeDuplicateUrls = (arr) => {
+  return [...new Set(arr.map(item => item))];
+};
