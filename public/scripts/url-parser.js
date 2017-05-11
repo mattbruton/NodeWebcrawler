@@ -15,7 +15,7 @@ export const removeSubDomain = (str) => {
 
 export const subDomainHelper = (urls) => {
   return new Promise((resolve, reject) => {
-    return resolve(urls.map(url => removeSubDomain(url)));
+       return resolve(urls.map(url => removeSubDomain(url)));
   });
 };
 
@@ -37,6 +37,8 @@ export const filterUndefined = (arr) => {
 
 export const removeDuplicateUrls = (arr) => {
   return new Promise((resolve, reject) => {
+    if (arr) {
     return resolve([...new Set(arr.map(item => item))]);
+    }
   });
 };

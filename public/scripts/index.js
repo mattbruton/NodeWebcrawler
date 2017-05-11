@@ -10,6 +10,7 @@ const resultsContainer = document.getElementById('container__results');
 let dataForTable = [];
 let previouslySearchedUrls = [];
 let domainsToScrape = [];
+let isPaused = false;
 
 const fetchPage = (fetchThis) => {
   return new Promise((resolve, reject) => {
@@ -28,10 +29,6 @@ const fetchPage = (fetchThis) => {
   });
 };
 
-const getRootDomainForUserInput = () => {
-  return Parser.removeSubDomain(userInput.value);
-};
-
 button.addEventListener('click', () => {
   if (Validator.checkUserInputForValidUrl(userInput.value)) {
     scrapePage(getRootDomainForUserInput);
@@ -41,6 +38,7 @@ button.addEventListener('click', () => {
 });
 
 pause.addEventListener('click', () => {
+  pauseApplication();
   resultsContainer.innerHTML = "";
   UpdateDOM.CreateResultsTable(resultsContainer);
   UpdateDOM.CreateDecendingTableRows(dataForTable, document.querySelector('table'));
@@ -70,7 +68,22 @@ const scrapePage = (url) => {
           return Parser.filterUndefined(domainsToScrape);
         })
         .then(data => {
-          console.log(data);
+          userInput.value = domainsToScrape.splice(0, 1);
+          checkForNext(isPaused);
         });
     });
-}
+};
+
+const pauseApplication = () => {
+  isPaused = true;
+};
+
+const getRootDomainForUserInput = () => {
+  return Parser.removeSubDomain(userInput.value);
+};
+
+const checkForNext = (bool) => {
+  if (bool === false) {
+    scrapePage(userInput.value);
+  };
+};
