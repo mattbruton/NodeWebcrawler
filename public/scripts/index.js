@@ -33,12 +33,16 @@ const fetchPage = (fetchThis) => {
 };
 
 resume.addEventListener(('click'), () => {
+  resume.classList.add('hidden');
+  pause.classList.remove('hidden');
   resultsContainer.innerHTML = "";
   isPaused = false;
   button.innerText = "Resume";
 })
 
 pause.addEventListener(('click'), () => {
+  pause.classList.add('hidden');
+  resume.classList.remove('hidden');
   resultsContainer.innerHTML = "";
   isPaused = true;
   UpdateDOM.CreateResultsTable(resultsContainer);
@@ -46,6 +50,8 @@ pause.addEventListener(('click'), () => {
 });
 
 button.addEventListener('click', () => {
+  button.classList.add('hidden');
+  pause.classList.remove('hidden');
   resultsContainer.innerHTML = "";
   if (Validator.checkUserInputForValidUrl(userInput.value)) {
     scrapePage(getRootDomainForUserInput);
