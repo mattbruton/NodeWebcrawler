@@ -7,7 +7,8 @@
     "start": "nodemon",
     "clean": "rimraf public/scripts/build/*",
     "webpack": "webpack",
-    "serve": "npm-run-all clean webpack serve"
+    "serve": "npm-run-all clean webpack serve",
+    "heroku-postbuild": "npm-run-all clean webpack"
   },
   "author": "",
   "license": "ISC",
@@ -21,6 +22,7 @@
     "cors-anywhere": "^0.4.0",
     "dotenv": "^4.0.0",
     "express": "^4.15.2",
+    "nodemon": "^1.11.0",
     "npm-run-all": "^4.0.2",
     "path": "^0.12.7",
     "request": "^2.81.0",
