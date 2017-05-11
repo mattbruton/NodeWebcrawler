@@ -4,10 +4,10 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "serve": "nodemon",
+    "start": "nodemon",
     "clean": "rimraf public/scripts/build/*",
     "webpack": "webpack",
-    "start": "npm-run-all clean webpack serve"
+    "serve": "npm-run-all clean webpack serve"
   },
   "author": "",
   "license": "ISC",
