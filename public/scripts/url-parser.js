@@ -10,12 +10,12 @@ export const removeSubDomain = (str) => {
   const re = /([a-z0-9]+)\.(arpa|asia|au|be|biz|com|co\.uk|de|edu|gov|ie|int|io|it|ly|mil|net|org|org\.uk|ru)/;
   if (str.match(re)) {
     return str.match(re)[0];
-  }
+  };
 };
 
 export const subDomainHelper = (urls) => {
   return new Promise((resolve, reject) => {
-      return resolve(urls.map(url => removeSubDomain(url)));
+    return resolve(urls.map(url => removeSubDomain(url)));
   });
 };
 
@@ -31,10 +31,12 @@ export const filterDomainsFromRoot = (arr, root) => {
 // Iterate through array and returns any item with a truthy value.
 export const filterUndefined = (arr) => {
   return new Promise(function (resolve, reject) {
-    return resolve(arr.filter(Boolean))
+    return resolve(arr.filter(Boolean));
   });
 };
 
 export const removeDuplicateUrls = (arr) => {
-  return [...new Set(arr.map(item => item))];
+  return new Promise((resolve, reject) => {
+    return resolve([...new Set(arr.map(item => item))]);
+  });
 };

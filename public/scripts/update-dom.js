@@ -5,16 +5,16 @@ export const createIFrame = (html, parent) => {
   iframe.setAttribute('class', 'remote__iframe');
   if (document.querySelector('iframe')) {
     parent.removeChild(document.querySelector('iframe'));
-  }
+  };
   parent.appendChild(iframe);
 };
 
 export const CreateResultsNotification = (results, domain, parent) => {
   let h3 = document.createElement('h3');
   h3.innerHTML = `Found ${results.length} remote urls on ${domain}!`;
-  if (parent.querySelector('h3')){
+  if (parent.querySelector('h3')) {
     parent.removeChild(document.querySelector('h3'));
-  }
+  };
   parent.appendChild(h3);
 };
 
@@ -28,17 +28,17 @@ export const CreateResultsTable = (parent => {
   <tr>
   `;
   parent.appendChild(table);
-})
+});
 
 export const CreateDecendingTableRows = (results, parent) => {
-  results.sort((a,b) => b.totalRemoteUrls - a.totalRemoteUrls)
-  .map(result => {
-    let row = document.createElement('tr');
-    parent.appendChild(row);
-    row.innerHTML = `
+  results.sort((a, b) => b.totalRemoteUrls - a.totalRemoteUrls)
+    .map(result => {
+      let row = document.createElement('tr');
+      parent.appendChild(row);
+      row.innerHTML = `
     <td class="url_cell">${result.url}</td>
     <td class="count_cell">${result.totalRemoteUrls}</td>
     `;
-    parent.appendChild(row);
-  });
+      parent.appendChild(row);
+    });
 };
