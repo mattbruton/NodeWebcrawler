@@ -3,14 +3,17 @@ import * as UpdateDOM from './update-dom.js';
 import * as Validator from './validator.js';
 
 const button = document.getElementById('btn');
-const pause = document.getElementById('pause');
+const resume = document.querySelector('#resume');
+const pause = document.querySelector('#pause');
 const userInput = document.getElementById('url-input');
 const resultsContainer = document.getElementById('container__results');
+const buttonContainer = document.getElementById('container__button');
 
 let dataForTable = [];
 let previouslySearchedUrls = [];
 let domainsToScrape = [];
 let isPaused = false;
+
 
 const fetchPage = (fetchThis) => {
   return new Promise((resolve, reject) => {
@@ -29,19 +32,27 @@ const fetchPage = (fetchThis) => {
   });
 };
 
+resume.addEventListener(('click'), () => {
+  resultsContainer.innerHTML = "";
+  isPaused = false;
+  button.innerText = "Resume";
+})
+
+pause.addEventListener(('click'), () => {
+  resultsContainer.innerHTML = "";
+  isPaused = true;
+  UpdateDOM.CreateResultsTable(resultsContainer);
+  UpdateDOM.CreateDecendingTableRows(dataForTable, document.querySelector('table'));
+});
+
 button.addEventListener('click', () => {
+  resultsContainer.innerHTML = "";
   if (Validator.checkUserInputForValidUrl(userInput.value)) {
     scrapePage(getRootDomainForUserInput);
   } else {
     console.log(`That doesn't appear to be a valid URL. Try again?`);
   };
-});
-
-pause.addEventListener('click', () => {
-  pauseApplication();
-  resultsContainer.innerHTML = "";
-  UpdateDOM.CreateResultsTable(resultsContainer);
-  UpdateDOM.CreateDecendingTableRows(dataForTable, document.querySelector('table'));
+  button.setAttribute('disable', 'disable');
 });
 
 const scrapePage = (url) => {
@@ -72,10 +83,6 @@ const scrapePage = (url) => {
           checkForNext(isPaused);
         });
     });
-};
-
-const pauseApplication = () => {
-  isPaused = true;
 };
 
 const getRootDomainForUserInput = () => {
