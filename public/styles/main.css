@@ -33,10 +33,6 @@ html, body {
     justify-content: center;
 }
 
-h3 {
-    /*max-height: 5vh;*/
-}
-
 .remote__iframe {
     flex: 0 1 100%;
     margin: 0;

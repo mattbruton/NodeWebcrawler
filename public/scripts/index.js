@@ -33,6 +33,20 @@ const getRootDomainForUserInput = () => {
 };
 
 button.addEventListener('click', () => {
+  if (Validator.checkUserInputForValidUrl(userInput.value)) {
+    scrapePage(getRootDomainForUserInput);
+  } else {
+    console.log(`That doesn't appear to be a valid URL. Try again?`);
+  };
+});
+
+pause.addEventListener('click', () => {
+  resultsContainer.innerHTML = "";
+  UpdateDOM.CreateResultsTable(resultsContainer);
+  UpdateDOM.CreateDecendingTableRows(dataForTable, document.querySelector('table'));
+});
+
+const scrapePage = (url) => {
   previouslySearchedUrls.push(getRootDomainForUserInput());
   fetchPage(Validator.validateInput(userInput.value))
     .then(response => {
@@ -59,10 +73,4 @@ button.addEventListener('click', () => {
           console.log(data);
         });
     });
-});
-
-pause.addEventListener('click', () => {
-  resultsContainer.innerHTML = "";
-  UpdateDOM.CreateResultsTable(resultsContainer);
-  UpdateDOM.CreateDecendingTableRows(dataForTable, document.querySelector('table'));
-});
+}
