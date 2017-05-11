@@ -7,8 +7,9 @@ const pause = document.getElementById('pause');
 const userInput = document.getElementById('url-input');
 const resultsContainer = document.getElementById('container__results');
 
-const dataForTable = [];
-const domainsToScrape = [];
+let dataForTable = [];
+let previouslySearchedUrls = [];
+let domainsToScrape = [];
 
 const fetchPage = (fetchThis) => {
   return new Promise((resolve, reject) => {
@@ -23,7 +24,7 @@ const fetchPage = (fetchThis) => {
       })
       .then(res => res.text()).then(data => {
         resolve(data);
-      })
+      });
   });
 };
 
@@ -32,19 +33,32 @@ const getRootDomainForUserInput = () => {
 };
 
 button.addEventListener('click', () => {
+  previouslySearchedUrls.push(getRootDomainForUserInput());
   fetchPage(Validator.validateInput(userInput.value))
     .then(response => {
-      UpdateDOM.createIFrame(response, resultsContainer)
-      return Parser.findAllUrls(response)
+      UpdateDOM.createIFrame(response, resultsContainer);
+      return Parser.findAllUrls(response);
     })
     .then(data => Parser.subDomainHelper(data))
     .then(data => Parser.filterDomainsFromRoot(data, getRootDomainForUserInput()))
     .then(data => Parser.filterUndefined(data))
     .then(data => {
       UpdateDOM.CreateResultsNotification(data, userInput.value, resultsContainer);
-      dataForTable.push({url: `${getRootDomainForUserInput()}`, totalRemoteUrls: data.length});
-      // console.log(Parser.removeDuplicateUrls(data));
-    });  
+      dataForTable.push({ url: `${getRootDomainForUserInput()}`, totalRemoteUrls: data.length });
+      return Parser.removeDuplicateUrls(data)
+        .then(data => {
+          let domainsToAdd = data.map(url => {
+            if (previouslySearchedUrls.indexOf(url) == -1 && domainsToScrape.indexOf(url) == -1) {
+              return url;
+            };
+          });
+          domainsToScrape = domainsToScrape.concat(domainsToAdd);
+          return Parser.filterUndefined(domainsToScrape);
+        })
+        .then(data => {
+          console.log(data);
+        });
+    });
 });
 
 pause.addEventListener('click', () => {

@@ -77,3 +77,8 @@ td {
     background: darkblue; /* Lighter grey background */
     text-align: center; /* Center our text */
 }
+
+.url_cell, .count_cell {
+    color: black;
+    background-color: #eee;
+}
