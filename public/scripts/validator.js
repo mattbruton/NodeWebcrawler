@@ -5,7 +5,7 @@ const prependIncompleteUrl = input => {
 };
 
 // Return if user's initial input looks remotely like a url:
-const checkUserInputForValidUrl = input => {
+export const checkUserInputForValidUrl = input => {
   const re = /[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?/;
   return (input.match(re)) ? true : false;
 };

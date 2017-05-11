@@ -14,8 +14,12 @@ const fetchPage = (url) => {
     return new Promise((resolve, reject) => {
         request(url, function (err, res, body) {
             if (err) {
-                reject(console.log(err));
+                throw err;
             } else {
+                if (res.statusCode !== 200)
+                {
+                    body = "http://crabfinder.com";
+                }
                 resolve(body);
             }
         });
